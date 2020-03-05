@@ -2,7 +2,6 @@ package de.internetsicherheit.brl.bloxberg.cache;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import java.nio.file.Path;
 import java.util.concurrent.TimeUnit;
 
 import static java.util.stream.IntStream.range;
@@ -17,20 +16,18 @@ public class HistoricDataExtractor {
     private static int failedBlocks;
 
 
-    public static void main(String[] args) throws IOException {
-
-        client = new BloxbergClient(ETHEREUM_NETWORK);
-        writer = new EthereumWriter(Path.of(OUTPUTDIRECTORY), "ExtractedData.txt");
-        failedBlocks = 0;
-        extractData(RANGE);
-        System.out.println("Anzahl gescheiterter Blöcke: " + failedBlocks);
-
-    }
+//    public static void nichtmain(String[] args) throws IOException {
+//
+//        client = new BloxbergClient(ETHEREUM_NETWORK);
+//        writer = new EthereumWriter(Path.of(OUTPUTDIRECTORY), "ExtractedData2.txt");
+//        failedBlocks = 0;
+//        extractData(RANGE);
+//        System.out.println("Anzahl gescheiterter Blöcke: " + failedBlocks);
+//
+//    }
 
     public static void extractData(int blockRange) throws IOException {
-        // TODO aggregate extracted Data
-        // alt range:
-        // client.getCurrentBlockNumber().intValue() - blockRange, client.getCurrentBlockNumber().intValue()
+
         range(client.getCurrentBlockNumber().intValue() - blockRange, client.getCurrentBlockNumber().intValue())
                 .mapToObj(i -> new BlockWithTransactionCombination(BigInteger.valueOf(i), getNumberOfTransactionsInBlockWithRetry(i)))
                 .forEach(HistoricDataExtractor::writeBlock);

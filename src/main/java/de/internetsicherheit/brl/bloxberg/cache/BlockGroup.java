@@ -9,9 +9,11 @@ public class BlockGroup{
 
     // Summe aller Transactionen der Blöcke in dieser Gruppe
     private int sum;
+    private int range;
 
 
-    public BlockGroup(BigInteger start, int sum){
+    public BlockGroup(BigInteger start, int sum, int range){
+        this.range = range;
         this.start = start;
         this.sum = sum;
     }
@@ -21,4 +23,5 @@ public class BlockGroup{
     public int getSum() {
         return sum;
     }
+    public int getRange() { return  range; }
 };

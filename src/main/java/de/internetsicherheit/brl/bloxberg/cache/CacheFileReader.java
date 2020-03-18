@@ -41,6 +41,14 @@ public class CacheFileReader {
                 .map(this::parseLine)
                 .limit(end);
     }
+
+    /**
+     *
+     * @param start
+     * @param end number of lines read
+     * @return
+     * @throws IOException
+     */
     public BlockWithTransactionCombination[] readLinesAndMakeArray(int start, int end) throws IOException {
          return Files.lines(inputFilePath)
                 .skip(start)

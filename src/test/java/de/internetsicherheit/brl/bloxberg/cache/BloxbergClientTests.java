@@ -15,7 +15,7 @@ public class BloxbergClientTests {
     @DisplayName("Fetching block number from bloxberg gives a value bigger than 5000000")
     @Test
     void blockNumber() throws IOException {
-        var client = buildClient();
+        BloxbergClient client = buildClient();
 
         BigInteger blockNumber = client.getCurrentBlockNumber();
 
@@ -28,7 +28,7 @@ public class BloxbergClientTests {
             )
     @ParameterizedTest
     void transactionsInBlock(int blockNumber, int expectedTransactionCount) throws IOException {
-        var client = buildClient();
+        BloxbergClient client = buildClient();
 
         BigInteger bn = BigInteger.valueOf(blockNumber);
 

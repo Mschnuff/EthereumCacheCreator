@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,7 +28,7 @@ public class DataBlockSummerizerTest {
     }
 
     private DataBlockSummerizer initDataBlockSummerizer() {
-        Path workDir = Path.of(Thread.currentThread().getContextClassLoader().getResource("./readfile.txt").getPath());
+        Path workDir = Paths.get(Thread.currentThread().getContextClassLoader().getResource("./readfile.txt").getPath());
         return new DataBlockSummerizer(workDir);
     }
 }

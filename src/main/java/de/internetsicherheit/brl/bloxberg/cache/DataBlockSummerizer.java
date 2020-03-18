@@ -34,22 +34,35 @@ public class DataBlockSummerizer {
      * @throws IOException
      */
         public BlockGroup[] summerizeData(int start, int end , int groupSize) throws IOException {
-            int startNextGroup = start;
-            blockGroups = new BlockGroup[end/groupSize +1];
+
+
+            // different ArraySize required depending on groupSize and start/endpoint
+            if((end - start) % groupSize == 0) {
+                blockGroups = new BlockGroup[(end - start)/groupSize];
+            } else {
+                blockGroups = new BlockGroup[(end - start)/groupSize +1];
+            }
+
+            // iterates using a stream, creates groups of blocks by adding up the number of transitions
+            int currentBlockNumber = start;
             int currentIndex = 0;
+            while(currentBlockNumber < end){
 
-            while(startNextGroup < (start+end)){
-                BlockWithTransactionCombination[] blocks = this.cfr.readLinesAndMakeArray(startNextGroup, startNextGroup+groupSize-1);
+                // creating an Array of BlockWithTransactionCombination py parsing lines from the stream
+                BlockWithTransactionCombination[] blocks = this.cfr.readLinesAndMakeArray(currentBlockNumber, groupSize);
+
+                // adding up the transitions
                 int sum = 0;
-
                 for (int i = 0; i < blocks.length; i++){
                     sum = sum + blocks[i].transactionCount;
                 }
-                this.blockGroups[currentIndex] = new BlockGroup(BigInteger.valueOf(startNextGroup), sum);
-                System.out.println("New Blockgroup \n" + "Blocknumber of starting block: " + BigInteger.valueOf(startNextGroup)
+                // creating the actual blockgroup objects
+                this.blockGroups[currentIndex] = new BlockGroup(BigInteger.valueOf(currentBlockNumber), sum, groupSize);
+                System.out.println("New Blockgroup \n" + "Blocknumber of starting block: " + BigInteger.valueOf(currentBlockNumber)
                         + "\n" + "Sum of all Transactions for this Blockgroup: " + sum);
+
                 currentIndex++;
-                startNextGroup = startNextGroup + groupSize;
+                currentBlockNumber = currentBlockNumber + groupSize;
 
         }
 

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -59,17 +60,17 @@ public class CacheFileReaderTest {
     @Test
     void parseToArray() throws IOException {
         CacheFileReader cfr = CreateFReader();
-        int start = 0;
+        int start = 99;
         int end = 100;
 
         BlockWithTransactionCombination [] bwtcArray = cfr.readLinesAndMakeArray(start, end);
 
         assertThat(bwtcArray.length).isEqualTo(100);
         assertThat(bwtcArray[0].blockNumber.intValue()).isEqualTo(start);
-        assertThat(bwtcArray[bwtcArray.length-1].blockNumber.intValue()).isEqualTo(end-1);
+        assertThat(bwtcArray[bwtcArray.length-1].blockNumber.intValue()).isEqualTo(198);
     }
     private CacheFileReader CreateFReader() throws IOException {
-        Path workDir = Path.of(Thread.currentThread().getContextClassLoader().getResource("./readfile.txt").getPath());
+        Path workDir = Paths.get(Thread.currentThread().getContextClassLoader().getResource("./readfile.txt").getPath());
         CacheFileReader dAgg = new CacheFileReader(workDir);
         return dAgg;
     }

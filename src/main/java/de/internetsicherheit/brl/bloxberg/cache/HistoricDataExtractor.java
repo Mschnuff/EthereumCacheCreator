@@ -26,6 +26,11 @@ public class HistoricDataExtractor {
 //
 //    }
 
+    /**
+     *  Extract Data from the Client
+     * @param blockRange
+     * @throws IOException
+     */
     public static void extractData(int blockRange) throws IOException {
 
         range(client.getCurrentBlockNumber().intValue() - blockRange, client.getCurrentBlockNumber().intValue())

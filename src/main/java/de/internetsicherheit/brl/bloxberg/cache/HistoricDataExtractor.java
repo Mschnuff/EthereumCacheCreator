@@ -8,12 +8,19 @@ import static java.util.stream.IntStream.range;
 
 public class HistoricDataExtractor {
 
-    private static BloxbergClient client;
-    private static EthereumWriter writer;
+    private final BloxbergClient client;
+    private final EthereumWriter writer;
+
     private static final String ETHEREUM_NETWORK = "https://core.bloxberg.org";
     private static final String OUTPUTDIRECTORY = System.getProperty("user.dir") + "/output/";
     private static final int RANGE = 10000;
+
     private static int failedBlocks;
+
+    public HistoricDataExtractor(BloxbergClient client, EthereumWriter writer) {
+        this.client = client;
+        this.writer = writer;
+    }
 
 
 //    public static void nichtmain(String[] args) throws IOException {
@@ -31,14 +38,14 @@ public class HistoricDataExtractor {
      * @param blockRange
      * @throws IOException
      */
-    public static void extractData(int blockRange) throws IOException {
+    public void extractData(int blockRange) throws IOException {
 
         range(client.getCurrentBlockNumber().intValue() - blockRange, client.getCurrentBlockNumber().intValue())
                 .mapToObj(i -> new BlockWithTransactionCombination(BigInteger.valueOf(i), getNumberOfTransactionsInBlockWithRetry(i)))
-                .forEach(HistoricDataExtractor::writeBlock);
+                .forEach(this::writeBlock);
     }
 
-    private static int getNumberOfTransactionsInBlockWithRetry(int i) {
+    private int getNumberOfTransactionsInBlockWithRetry(int i) {
         int retryAtempts = 0;
         boolean success = false;
         while (retryAtempts < 10 && !success) {
@@ -61,7 +68,7 @@ public class HistoricDataExtractor {
         return 0;
     }
 
-    private static void writeBlock(BlockWithTransactionCombination b) {
+    private void writeBlock(BlockWithTransactionCombination b) {
         try {
             writer.writeBlockWithTransactions(b);
         } catch (IOException e) {

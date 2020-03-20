@@ -36,8 +36,8 @@ public class CacheFileReaderTest {
 
         Stream<BlockWithTransactionCombination> blockStream = dAgg.readAllLines();
         BlockWithTransactionCombination[] blockTransTuple = blockStream.toArray(BlockWithTransactionCombination[]::new);
-
-        assertThat(blockTransTuple[2000].blockNumber.intValue()).isEqualTo(2001);
+        assertThat(blockTransTuple[0].blockNumber.intValue()).isEqualTo(0);
+        assertThat(blockTransTuple[2000].blockNumber.intValue()).isEqualTo(2000);
     }
 
     @DisplayName("Partly parses the file with the stated range.")

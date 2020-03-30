@@ -25,7 +25,7 @@ public class HistoricDataVisualizer extends Application {
 
         DataBlockSummerizer dbs = initDataBlockSummerizer();
         // max value in file: 5342081
-        BlockGroup[] bgA = dbs.summerizeData(0, 5342081, 100000);
+        BlockGroup[] bgA = dbs.summerizeData(0, 5342081, 5342080);
         primaryStage.setTitle("Historic Data Visualizer");
 
         //Group root = new Group();

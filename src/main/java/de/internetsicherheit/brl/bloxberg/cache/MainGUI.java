@@ -9,6 +9,8 @@ import javafx.stage.Stage;
 
 /**
  * this class is supposed to become the new main class once the other classes are changed accordingly.
+ * NOT USED ATM
+ * delete and rename historicDataViszualizer accordingly
  */
 public class MainGUI extends Application {
 
@@ -18,6 +20,8 @@ public class MainGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        HistoricDataVisualizer visualizer = new HistoricDataVisualizer();
         primaryStage.setTitle("Bloxberg Cache Creator");
 
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml_main.fxml"));

@@ -14,18 +14,52 @@ import java.nio.file.Paths;
 
 public class HistoricDataVisualizer extends Application {
 
-    private static final String OUTPUTDIRECTORY = System.getProperty("user.dir") + "/output/";
+    private BloxbergClient client;
+    private EthereumWriter writer;
+    private final String ETHEREUM_NETWORK = "https://core.bloxberg.org";
+    private final String OUTPUTDIRECTORY = System.getProperty("user.dir") + "/output/";
+
+
 
     public static void main(String[] args) {
         launch(args);
     }
 
+
     @Override
     public void start(Stage primaryStage) throws IOException {
 
-        DataBlockSummerizer dbs = initDataBlockSummerizer();
+        // setup
+
+        // change to inputfield
+        // from current block backwards -  does this make sense?
+        int range = 1000000;
+
+        // change to inputfield
+        int start = 0;
+
+        // change to inputfield
+        int end = 5342081;
+
+        // change to inputfield
         // max value in file: 5342081, use historicDataExtractor to generate/modify file
-        BlockGroup[] bgA = dbs.summerizeData(0, 5342081, 5342080);
+        int groupsize = 100000;
+
+        // change to inputfield or dropdown menu
+        client = new BloxbergClient(ETHEREUM_NETWORK);
+        // add inputfield for the file name.
+        writer = new EthereumWriter(Path.of(OUTPUTDIRECTORY), "ExtractedData3.txt");
+        DataBlockSummerizer dbs = initDataBlockSummerizer();
+
+        //extract
+        HistoricDataExtractor extractor = new HistoricDataExtractor(client, writer, range);
+        /*extractor.extractAllData();
+         TO DO: autoextract = readlastline --> getLastBlocknumberInFile --> extract from lastBlocknumberInFile to
+         current blocknumber --> writeNewLines
+        */
+
+        // visualize
+        BlockGroup[] bgA = dbs.summerizeData(start, end, groupsize);
 
         primaryStage.setTitle("Historic Data Visualizer");
         primaryStage.setScene(generateLineChart(bgA));

@@ -11,39 +11,24 @@ public class HistoricDataExtractor {
 
     private BloxbergClient client;
     private EthereumWriter writer;
-    private final String ETHEREUM_NETWORK = "https://core.bloxberg.org";
-    private final String OUTPUTDIRECTORY = System.getProperty("user.dir") + "/output/";
     private final int range;
-    private int failedBlocks;
 
-
-    /*public void main(String[] args) throws IOException {
-
-        client = new BloxbergClient(ETHEREUM_NETWORK);
-        writer = new EthereumWriter(Path.of(OUTPUTDIRECTORY), "ExtractedData3.txt");
-        failedBlocks = 0;
-        extractData(range);
-        System.out.println("Anzahl gescheiterter Blöcke: " + failedBlocks);
-
-    }*/
 
     public HistoricDataExtractor(BloxbergClient client, EthereumWriter writer, int range) {
 
         this.client = client;
         this.writer = writer;
         this.range = range;
-        this.failedBlocks = 0;
 
     }
 
     /**
      *  Extract Data from the Client ranging from the most recent block to a past block specified by a range
-     * @param blockRange how many blocks back should data be extracted from the blockchain
      * @throws IOException exception when connection to blockchain cannot be established
      */
-    public void extractData(int blockRange) throws IOException {
+    public void extractData() throws IOException {
 
-        range(client.getCurrentBlockNumber().intValue() - blockRange, client.getCurrentBlockNumber().intValue())
+        range(client.getCurrentBlockNumber().intValue() - range, client.getCurrentBlockNumber().intValue())
                 .mapToObj(i -> new BlockWithTransactionCombination(BigInteger.valueOf(i), getNumberOfTransactionsInBlockWithRetry(i)))
                 .forEach(this::writeBlock);
     }

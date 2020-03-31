@@ -24,17 +24,22 @@ public class HistoricDataVisualizer extends Application {
     public void start(Stage primaryStage) throws IOException {
 
         DataBlockSummerizer dbs = initDataBlockSummerizer();
-        // max value in file: 5342081
+        // max value in file: 5342081, use historicDataExtractor to generate/modify file
         BlockGroup[] bgA = dbs.summerizeData(0, 5342081, 5342080);
-        primaryStage.setTitle("Historic Data Visualizer");
 
-        //Group root = new Group();
+        primaryStage.setTitle("Historic Data Visualizer");
         primaryStage.setScene(generateLineChart(bgA));
-        //primaryStage.setScene(generateSimpleLineChart());
+
         primaryStage.show();
 
     }
 
+    /**
+     * generates a LineChart from a BlockGroup Array.
+     * @param bgA the Blockgroup Array representing all blocks and their transactions that are being used to generate
+     *            the chart
+     * @return return the scene that needs to be rendered.
+     */
     private Scene generateLineChart(BlockGroup[] bgA) {
 
         //defining the axes
@@ -45,20 +50,17 @@ public class HistoricDataVisualizer extends Application {
         yAxis.setLabel("Transactions");
         //creating the chart
         final LineChart<Number,Number> lineChart =
-                new LineChart<Number,Number>(xAxis,yAxis);
+                new LineChart<>(xAxis,yAxis);
 
         lineChart.setTitle("Transaction in Blockchain history");
         //defining a series
         XYChart.Series series = new XYChart.Series();
-
         series.setName("Number of Transactions per " + bgA[bgA.length-1].getRange() + " blocks");
-        //populating the series with data  (length -1  ?)
 
+        //populating the series with data  (length -1  ?)
         for(int i = 0; i < bgA.length; i++) {
 
-
                 series.getData().add(new XYChart.Data(bgA[i].getStart(), bgA[i].getSum()));
-
         }
 
         Scene scene  = new Scene(lineChart,800,600);
@@ -66,6 +68,12 @@ public class HistoricDataVisualizer extends Application {
         return scene;
 
     }
+
+    /**
+     * creates a DataBlockSummerizer that can add up the transactions per specified range of blocks from a specified path.
+     * the range is specified in the method summerizeData(start, end, groupSize)
+     * @return the DataBlockSummerizer
+     */
     private DataBlockSummerizer initDataBlockSummerizer() {
 
         Path workDir= Paths.get((OUTPUTDIRECTORY) + "ExtractedData.txt");

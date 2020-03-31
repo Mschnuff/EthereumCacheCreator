@@ -39,7 +39,7 @@ public class HistoricDataExtractor {
     /**
      *  Extract Data from the Client ranging from the most recent block to a past block specified by a range
      * @param blockRange how many blocks back should data be extracted from the blockchain
-     * @throws IOException
+     * @throws IOException exception when connection to blockchain cannot be established
      */
     public void extractData(int blockRange) throws IOException {
 
@@ -50,7 +50,7 @@ public class HistoricDataExtractor {
 
     /**
      * Extract all the Number of Transactions per block for the entire history of the blockchain. this might take a while.
-     * @throws IOException
+     * @throws IOException exception when connection to blockchain cannot be established
      */
     public void extractAllData() throws IOException {
         range(0, client.getCurrentBlockNumber().intValue())
@@ -59,15 +59,16 @@ public class HistoricDataExtractor {
     }
 
     /**
-     *
-     * @param number of the block we are looking at
-     * @return i number of transactions in a single block
+     *  extract the amount of transactions from a single block. if the program can't establish connection to the
+     *  blockchain it retries up to 10 times.
+     * @param blockNumber the number of the block that the method extracts data from
+     * @return amount of transactions in a single block
      */
-    public int getNumberOfTransactionsInBlockWithRetry(int i) {
+    public int getNumberOfTransactionsInBlockWithRetry(int blockNumber) {
         int transactions =
         Unreliables.retryUntilSuccess(10, () -> {
             try {
-                return client.getNumberOfTransactionsInBlock(BigInteger.valueOf(i));
+                return client.getNumberOfTransactionsInBlock(BigInteger.valueOf(blockNumber));
             } catch (IOException e) {
                 return 0;
             }
@@ -76,10 +77,14 @@ public class HistoricDataExtractor {
         return transactions;
     }
 
-
-    private void writeBlock(BlockWithTransactionCombination b) {
+    /**
+     * this method merely tells the writer to write out
+     * a combination of blocknumber and amount of transactions into a file specified in the writer
+     * @param comb the combination of blocknumber and transactioncount as a custom datatype.
+     */
+    private void writeBlock(BlockWithTransactionCombination comb) {
         try {
-            writer.writeBlockWithTransactions(b);
+            writer.writeBlockWithTransactions(comb);
         } catch (IOException e) {
             e.printStackTrace();
         }

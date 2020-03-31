@@ -14,6 +14,10 @@ public class BloxbergClient {
 
     private final Web3j web3j;
 
+    /**
+     * the bloxbergclient. any other blockchain can be used aswell
+     * @param networkUrl the url of the blockchain
+     */
     public BloxbergClient(String networkUrl) {
         web3j = Web3j.build(new HttpService(networkUrl));
     }
@@ -24,6 +28,13 @@ public class BloxbergClient {
         return blockNumber.getBlockNumber();
     }
 
+    /**
+     * sends a request to the blockchain to extract the number of transactions in a single block.
+     * this method is quite timeconsuming.
+     * @param block the blocknumber
+     * @return the transactioncount
+     * @throws IOException connection to client lost/cannot be established
+     */
     public int getNumberOfTransactionsInBlock(BigInteger block) throws IOException {
 
         Request<?, EthGetBlockTransactionCountByNumber> request = web3j.ethGetBlockTransactionCountByNumber(DefaultBlockParameter.valueOf(block));

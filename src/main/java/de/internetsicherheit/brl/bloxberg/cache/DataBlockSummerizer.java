@@ -26,12 +26,12 @@ public class DataBlockSummerizer {
     }
 
     /**
-     * Mehtod that generates an Array of Type Blockgroup, that can be easily used for visualization
+     * Method that generates an Array of Type Blockgroup, that can be easily used for visualization
      * @param start the blocknumber of the first block to be looked at
      * @param end the blocknumber of the last block to be looked at
      * @param groupSize the Size of groups of blocks.
-     * @return
-     * @throws IOException
+     * @return an Array of Blockgroups
+     * @throws IOException exception when file cannot be read
      */
         public BlockGroup[] summerizeData(int start, int end , int groupSize) throws IOException {
 

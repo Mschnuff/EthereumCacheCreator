@@ -7,7 +7,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 
-
+/**
+ * this class is supposed to become the new main class once the other classes are changed accordingly.
+ */
 public class MainGUI extends Application {
 
     public static void main(String[] args) {
@@ -18,7 +20,7 @@ public class MainGUI extends Application {
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Bloxberg Cache Creator");
 
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml_example.fxml"));
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("fxml_main.fxml"));
         Scene mainScene = new Scene(root, 300, 300);
         primaryStage.setScene(mainScene);
         primaryStage.show();

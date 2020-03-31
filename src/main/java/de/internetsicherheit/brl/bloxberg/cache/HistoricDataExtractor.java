@@ -51,16 +51,11 @@ public class HistoricDataExtractor {
      */
     public int getNumberOfTransactionsInBlockWithRetry(int blockNumber) {
         int transactions =
-        Unreliables.retryUntilSuccess(10, () -> {
-            try {
-                return client.getNumberOfTransactionsInBlock(BigInteger.valueOf(blockNumber));
-            } catch (IOException e) {
-                return 0;
-            }
-        });
-
-        return transactions;
+                Unreliables.retryUntilSuccess(10, () ->
+                        client.getNumberOfTransactionsInBlock(BigInteger.valueOf(blockNumber))
+                );        return transactions;
     }
+
 
     /**
      * this method merely tells the writer to write out
